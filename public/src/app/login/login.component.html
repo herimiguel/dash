@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+
+
+<div class='container-fluid'>
+    <div class='row'>
+        <div class='col-md-12'>
+            <h1 class='text-center'>Register</h1>
+            <form (submit)='createUser()' #formData='ngForm'>
+                <div *ngIf="exists" [ngStyle]="{'text-align': 'center'}" class='errors'>Email already registered. Please log in or use a different email to register.</div>
+                <div class="form-group row">
+                  <div class="col-md-4 col-md-offset-4 input-style">
+                    <label for="name" class="col-md-1 col-form-label">Name:</label>
+                    <input class="input-style form-control" type="text" name="name"
+                    [(ngModel)]="user.name" required minlength="2" maxlength="30" #name='ngModel'>
+                    <div *ngIf='name.errors'>
+                        <div class='errors' *ngIf="name.errors.required">Name is required.</div>  
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-md-offset-4 input-style">
+                    <label for="email" class="col-md-1 col-form-label">Email:</label>
+                    <input class="input-style form-control" type="text" name="email" pattern="^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$"
+                    [(ngModel)]="user.email" required minlength="5" maxlength="30" #email='ngModel'>
+                    <div *ngIf='email.errors' class='errors'>
+                        <div class='errors' *ngIf="email.errors.pattern">Email format error. Please try again.</div>
+                        <div class='errors' *ngIf="email.errors.required">Please Enter a Valid Email.</div>    
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-md-offset-4 input-style">
+                    <label for="password" class="col-md-1 col-form-label">Password:</label>
+                    <input class="form-control" type="password" name="password"
+                    [(ngModel)]="user.password" required minlength="8" maxlength="32"  pattern="^([a-zA-Z0-9@*#]{8,15})$" #password='ngModel'>
+                    <div *ngIf='password.errors' class='errors'>
+                        <div class='errors' *ngIf="password.errors.required">Password is required.</div> 
+                        <div class='errors' *ngIf="password.errors.pattern">Password format error. Letters and numbers only. At least 8 characters.</div>  
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-md-offset-4 input-style">
+                    <label for="confirm_pw" >Confirm Password:</label>
+                    <input class="input-style form-control" type="password" name="confirm_pw" required minlength="8" maxlength="32"  [(ngModel)]="user.confirm" pattern="^([a-zA-Z0-9@*#]{8,15})$" #confirm='ngModel'>
+                    <div class='errors'><div class='errors' *ngIf="user.confirm !== user.password">Passwords do not match.</div></div>
+                    <div *ngIf='confirm.errors' class='errors'>
+                        <div class='errors' *ngIf="confirm.errors.required">Password is required.</div> 
+                        <div class='errors' *ngIf="confirm.errors.pattern">Password format error. Letters and numbers only. At least 8 characters.</div>  
+                    </div></div>
+                    <div class="col-md-12"><input class="input-style btn btn-primary register" type="submit" value='Register' [disabled]="user.confirm !== user.password || !formData.valid"></div>
+                </div>
+            </form>
+        </div> 
+    </div>
+    <div class='row'>
+        <div class='col-md-4 col-md-offset-4'>
+            <h1 class='text-center'>Login</h1>
+            <form (submit)='loginUser()' #loginForm='ngForm'>
+                <div *ngIf="pwError" [ngStyle]="{'text-align': 'center'}" class='errors'>Incorrect password.Please try again.</div>
+                 <div *ngIf="emailError" [ngStyle]="{'text-align': 'center'}" class='errors'>User does not exist. Please register.</div>
+                <div class="form-group row">
+                    <label for="email" class="col-1 col-form-label">Email:</label>
+                    <div class="col-4"><input class="form-control" type="text" [(ngModel)]="login.email" #loginEmail="ngModel" required name="email"></div>
+                    <label for="password" class="col-1 col-form-label">Password:</label>
+                    <div class="col-4"><input [(ngModel)]="login.password" #loginPassword="ngModel" class="form-control" type="password" required name="password"></div>
+                    <div class="col-4"><input class="btn btn-primary login" type="submit" value='Login' [disabled]="!loginForm.valid"></div>
+                </div>
+            </form>
+        </div>
+        <div class='col-md-12 footer'>
+    </div>
+  </div>
+  </div>
+</body>
+</html>
